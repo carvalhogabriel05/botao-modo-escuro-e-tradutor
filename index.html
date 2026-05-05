@@ -1,0 +1,170 @@
+
+<style>
+  .form-page { background: aliceblue; min-height: 500px; padding: 20px; font-family: arial, sans-serif; transition: background 0.3s; }
+  .form-page.inverted { background: #1a2a3a; }
+  .container { width: 100%; max-width: 660px; margin: 0 auto; background: #cfd3d6; padding: 40px; border-radius: 5px; position: relative; transition: background 0.3s; }
+  .form-page.inverted .container { background: #2c3e50; }
+  h1 { margin-bottom: 30px; color: var(--color-text-primary); transition: color 0.3s; font-size: 22px; font-weight: 500; }
+  .form-page.inverted h1 { color: #ecf0f1; }
+  .form-group { display: flex; align-items: center; margin-bottom: 20px; }
+  label { width: 200px; font-size: 18px; color: #222; transition: color 0.3s; }
+  .form-page.inverted label { color: #bdc3c7; }
+  input { flex: 1; padding: 10px; border: none; border-radius: 8px; background: #999; color: white; font-size: 16px; transition: background 0.3s; }
+  .form-page.inverted input { background: #34495e; color: #ecf0f1; }
+  input::placeholder { color: #ddd; }
+  .form-page.inverted input::placeholder { color: #7f8c8d; }
+  button.btn { padding: 15px 40px; margin-right: 20px; border: none; border-radius: 10px; background: #999; font-size: 16px; cursor: pointer; color: #fff; transition: background 0.3s; }
+  button.btn:hover { background: #777; }
+  .form-page.inverted button.btn { background: #34495e; color: #ecf0f1; }
+  .form-page.inverted button.btn:hover { background: #2c3e50; }
+  .top-controls { position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; align-items: center; }
+  .toggle-btn { background: #555; color: white; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.3s; }
+  .toggle-btn:hover { background: #333; }
+  .form-page.inverted .toggle-btn { background: #ecf0f1; color: #2c3e50; }
+  .form-page.inverted .toggle-btn:hover { background: #bdc3c7; }
+  .lang-btn { background: #4a90d9; color: white; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.3s; font-weight: 500; }
+  .lang-btn:hover { background: #357abd; }
+  .form-page.inverted .lang-btn { background: #2980b9; }
+  .form-page.inverted .lang-btn:hover { background: #1f6799; }
+  .lang-menu { position: absolute; top: 52px; right: 16px; background: white; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.18); overflow: hidden; z-index: 10; display: none; min-width: 130px; }
+  .lang-menu.open { display: block; }
+  .form-page.inverted .lang-menu { background: #2c3e50; }
+  .lang-option { padding: 10px 18px; cursor: pointer; font-size: 14px; color: #222; transition: background 0.2s; display: flex; align-items: center; gap: 8px; }
+  .lang-option:hover { background: #f0f0f0; }
+  .form-page.inverted .lang-option { color: #ecf0f1; }
+  .form-page.inverted .lang-option:hover { background: #34495e; }
+  .lang-option.active { font-weight: 600; color: #4a90d9; }
+  .form-page.inverted .lang-option.active { color: #5dade2; }
+  .flag { font-size: 16px; }
+</style>
+
+<div class="form-page" id="page">
+  <div class="container">
+    <div class="top-controls">
+      <button class="lang-btn" id="langBtn" onclick="toggleMenu()">
+        <span id="langFlag">🇧🇷</span> <span id="langLabel">PT</span> ▾
+      </button>
+      <button class="toggle-btn" id="toggleBtn" onclick="toggleColors()">
+        <span>◑</span> <span id="invertLabel">inverter cores</span>
+      </button>
+    </div>
+
+    <div class="lang-menu" id="langMenu">
+      <div class="lang-option active" onclick="setLang('pt')" id="opt-pt"><span class="flag">🇧🇷</span> Português</div>
+      <div class="lang-option" onclick="setLang('en')" id="opt-en"><span class="flag">🇺🇸</span> English</div>
+      <div class="lang-option" onclick="setLang('es')" id="opt-es"><span class="flag">🇪🇸</span> Español</div>
+    </div>
+
+    <h1 id="form-title">HTML Form</h1>
+
+    <div class="form-group">
+      <label id="lbl-first"></label>
+      <input type="text" id="ph-first" placeholder="">
+    </div>
+    <div class="form-group">
+      <label id="lbl-last"></label>
+      <input type="text" id="ph-last" placeholder="">
+    </div>
+    <div class="form-group">
+      <label id="lbl-email"></label>
+      <input type="text" id="ph-email" placeholder="">
+    </div>
+    <div class="form-group">
+      <label id="lbl-phone"></label>
+      <input type="text" id="ph-phone" placeholder="">
+    </div>
+    <div class="form-group">
+      <label id="lbl-dob"></label>
+      <input type="date">
+    </div>
+    <button class="btn" id="btn-confirm" type="button"></button>
+    <button class="btn" id="btn-clear" type="button"></button>
+  </div>
+</div>
+
+<script>
+const translations = {
+  pt: {
+    flag: '🇧🇷', label: 'PT',
+    title: 'HTML Form',
+    first: 'primeiro nome', phFirst: 'digite seu nome',
+    last: 'sobrenome', phLast: 'digite seu sobrenome',
+    email: 'email', phEmail: 'digite seu email',
+    phone: 'numero de telefone', phPhone: 'digite seu numero',
+    dob: 'data de nascimento',
+    confirm: 'confirmar', clear: 'apagar',
+    invert: 'inverter cores'
+  },
+  en: {
+    flag: '🇺🇸', label: 'EN',
+    title: 'HTML Form',
+    first: 'first name', phFirst: 'enter your name',
+    last: 'last name', phLast: 'enter your last name',
+    email: 'email', phEmail: 'enter your email',
+    phone: 'phone number', phPhone: 'enter your number',
+    dob: 'date of birth',
+    confirm: 'confirm', clear: 'clear',
+    invert: 'invert colors'
+  },
+  es: {
+    flag: '🇪🇸', label: 'ES',
+    title: 'Formulario HTML',
+    first: 'nombre', phFirst: 'ingresa tu nombre',
+    last: 'apellido', phLast: 'ingresa tu apellido',
+    email: 'correo electrónico', phEmail: 'ingresa tu correo',
+    phone: 'número de teléfono', phPhone: 'ingresa tu número',
+    dob: 'fecha de nacimiento',
+    confirm: 'confirmar', clear: 'borrar',
+    invert: 'invertir colores'
+  }
+};
+
+let currentLang = 'pt';
+
+function applyLang(lang) {
+  const t = translations[lang];
+  document.getElementById('langFlag').textContent = t.flag;
+  document.getElementById('langLabel').textContent = t.label;
+  document.getElementById('form-title').textContent = t.title;
+  document.getElementById('lbl-first').textContent = t.first;
+  document.getElementById('ph-first').placeholder = t.phFirst;
+  document.getElementById('lbl-last').textContent = t.last;
+  document.getElementById('ph-last').placeholder = t.phLast;
+  document.getElementById('lbl-email').textContent = t.email;
+  document.getElementById('ph-email').placeholder = t.phEmail;
+  document.getElementById('lbl-phone').textContent = t.phone;
+  document.getElementById('ph-phone').placeholder = t.phPhone;
+  document.getElementById('lbl-dob').textContent = t.dob;
+  document.getElementById('btn-confirm').textContent = t.confirm;
+  document.getElementById('btn-clear').textContent = t.clear;
+  document.getElementById('invertLabel').textContent = t.invert;
+
+  ['pt','en','es'].forEach(l => {
+    document.getElementById('opt-' + l).classList.toggle('active', l === lang);
+  });
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  applyLang(lang);
+  document.getElementById('langMenu').classList.remove('open');
+}
+
+function toggleMenu() {
+  document.getElementById('langMenu').classList.toggle('open');
+}
+
+function toggleColors() {
+  document.getElementById('page').classList.toggle('inverted');
+}
+
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('langMenu');
+  const btn = document.getElementById('langBtn');
+  if (!menu.contains(e.target) && !btn.contains(e.target)) {
+    menu.classList.remove('open');
+  }
+});
+
+applyLang('pt');
+</script>
